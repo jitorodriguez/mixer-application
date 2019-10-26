@@ -24,6 +24,7 @@ twitchBuyovers.forEach(function(streamer){
 	});
 });
 
+
 client.request('GET', '/channels', {
 	qs: {
 		fields: 'user,online,viewersTotal,numFollowers,viewersCurrent', 
