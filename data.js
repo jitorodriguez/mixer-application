@@ -13,6 +13,8 @@ client.use (new Mixer.OAuthProvider(client, {
 	clientId: 'Click here to get your Client ID!',
 }));
 
+//Cycle through data of bought streamers... then if successful, proceed to obtain top 10 streamers ignoring bought streamers
+
 const twitchBuyovers = Array('Ninja', 'Shroud');
 
 console.log('Mixer bought streamers...')
@@ -21,20 +23,22 @@ twitchBuyovers.forEach(function(streamer){
 	.then(res => {
 		const channel = res.body;
 		console.log(`${channel.user.username}[${channel.online}]: Followers-Total[${channel.numFollowers}] Viewers-Total[${channel.viewersTotal}] Viewers-Current[${channel.viewersCurrent}]`);
-	});
-});
-
-
-client.request('GET', '/channels', {
-	qs: {
-		fields: 'user,online,viewersTotal,numFollowers,viewersCurrent', 
-		order: 'viewersCurrent:DESC',
-		limit: 10
-	},
-}).then(res => {
-	console.log('Top 10 Online streamers by current viewers...');
-	for (let i = 0; i < res.body.length; i++) {
-		const channel = res.body[i];
-		console.log(`${channel.user.username}[${channel.online}]: Viewers-Current[${channel.viewersCurrent}] Followers-Total[${channel.numFollowers}] Viewers-Total[${channel.viewersTotal}]`);
-	}
+	})
+	.then(() => {
+		client.request('GET', '/channels', {
+			qs: {
+				fields: 'user,online,viewersTotal,numFollowers,viewersCurrent', 
+				order: 'viewersCurrent:DESC',
+				limit: 10
+			},
+		}).then(res => {
+			console.log('Top 10 Online streamers by current viewers...');
+			for (let i = 0; i < res.body.length; i++) {
+				const channel = res.body[i];
+				console.log(`${channel.user.username}[${channel.online}]: Viewers-Current[${channel.viewersCurrent}] Followers-Total[${channel.numFollowers}] Viewers-Total[${channel.viewersTotal}]`);
+			}
+		});
+	}).catch( () => {
+		console.log ("Caught Error...");
+	})
 });
