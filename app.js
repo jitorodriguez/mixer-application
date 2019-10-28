@@ -1,14 +1,19 @@
-const http = require('http');
-
-const hostname = '127.0.0.1';
-const port = 3000;
-
-const server = http.createServer((req, res) => {
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/plain');
-  res.end('Hello Mixer!!! :)\n');
+"use strict";
+exports.__esModule = true;
+//Simple function that returns a introduction
+function sayHello() {
+    return "Hello Mixer!! :)";
+}
+var express = require("express");
+var app = express();
+var hostname = '127.0.0.1';
+var port = 7000;
+//Set up GET for landing page
+app.get('/', function (req, res) {
+    var intro = sayHello();
+    res.send(intro);
 });
-
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
+//Add listen
+var server = app.listen(port, function () {
+    console.log("Express running -> PORT " + server.address.port);
 });
