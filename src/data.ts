@@ -5,7 +5,8 @@
 
 "use strict";
 
-import Mixer, { IOAuthProviderOptions, IOptionalUrlRequestOptions } from "@mixer/client-node";
+import * as Mixer from "@mixer/client-node";
+import { IOAuthProviderOptions, IOptionalUrlRequestOptions } from "@mixer/client-node";
 
 const client: Mixer.Client = new Mixer.Client();
 const options: IOAuthProviderOptions = {clientId : "Click here to get your Client ID!"};
