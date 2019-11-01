@@ -5,6 +5,7 @@
   "main": "dist/index.js",
   "dependencies": {
     "@mixer/client-node": "^3.5.0",
+    "@types/request": "^2.48.3",
     "express": "^4.17.1"
   },
   "devDependencies": {
