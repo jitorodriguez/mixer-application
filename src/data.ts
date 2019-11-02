@@ -32,22 +32,31 @@ twitchBuyovers.forEach( (streamer) => {
         // tslint:disable-next-line:no-console
         console.log(`${channel.user.username}[${channel.online}]: Followers-Total[${channel.numFollowers}] Viewers-Total[${channel.viewersTotal}] Viewers-Current[${channel.viewersCurrent}]`);
     })
-    .then(() => {
-        const obj: any = {fields: "", order: "", limit: 10};
-        client.request("GET", "/channels", obj)
-        .then((res) => {
-            // tslint:disable-next-line:no-console
-            console.log("Top 10 Online streamers by current viewers...");
-            const results: (IOptionalUrlRequestOptions["body"]) = res.body;
-
-            for (const channel of results) {
-
-                // tslint:disable-next-line:no-console
-                console.log(`${channel.user.username}[${channel.online}]: Viewers-Current[${channel.viewersCurrent}] Followers-Total[${channel.numFollowers}] Viewers-Total[${channel.viewersTotal}]`);
-            }
-        });
-    }).catch( () => {
+    .catch( () => {
         // tslint:disable-next-line:no-console
         console.log ("Caught Error...");
     });
+});
+
+const obj: IOptionalUrlRequestOptions = {
+    qs: { fields: "user,online,viewersTotal,numFollowers,viewersCurrent",
+            order: "viewersCurrent:DESC",
+            limit: 10
+        }
+    };
+
+client.request("GET", "/channels", obj)
+.then((res) => {
+    // tslint:disable-next-line:no-console
+    console.log("Top 10 Online streamers by current viewers...");
+    const results: (IOptionalUrlRequestOptions["body"]) = res.body;
+
+    for (const channel of results) {
+        // tslint:disable-next-line:no-console
+        console.log(`${channel.user.username}[${channel.online}]: Viewers-Current[${channel.viewersCurrent}] Followers-Total[${channel.numFollowers}] Viewers-Total[${channel.viewersTotal}]`);
+    }
+})
+.catch( () => {
+    // tslint:disable-next-line:no-console
+    console.log ("Caught Error...");
 });
