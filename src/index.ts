@@ -5,6 +5,7 @@ function sayHello() {
 }
 
 import express from "express";
+import testFunction from "../dist/data.js";
 
 const app = express();
 
@@ -15,6 +16,11 @@ const port = 7000;
 app.get("/", (req, res) => {
     const intro = sayHello();
     res.send( intro );
+});
+
+app.get("/data", (req, res) => {
+    // tslint:disable-next-line:no-console
+    res.send( testFunction() );
 });
 
 // Add listen

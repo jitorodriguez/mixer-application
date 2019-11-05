@@ -5,6 +5,12 @@
 
 "use strict";
 
+// Simple function that returns a introduction
+function testFunction() {
+    const myData: string = "Hello Data!! :)";
+    return myData;
+}
+
 import * as Mixer from "@mixer/client-node";
 import { IOAuthProviderOptions, IOptionalUrlRequestOptions } from "@mixer/client-node";
 
@@ -21,8 +27,10 @@ client.use (provider);
 
 const twitchBuyovers = Array("Ninja", "Shroud");
 
-// tslint:disable-next-line:no-console
-console.log("Mixer bought streamers...");
+let dataInfo: string = "";
+
+// console.log("Mixer bought streamers...");
+dataInfo += "Mixer bought streamers...\n";
 
 twitchBuyovers.forEach( (streamer) => {
     client.request("GET", `channels/${streamer}`)
