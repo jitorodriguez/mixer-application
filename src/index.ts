@@ -5,7 +5,7 @@ function sayHello() {
 }
 
 import express from "express";
-import testFunction from "../dist/data.js";
+import { baseDataCall } from "./utils/data";
 
 const app = express();
 
@@ -19,8 +19,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/data", (req, res) => {
-    // tslint:disable-next-line:no-console
-    res.send( testFunction() );
+    res.send( baseDataCall() );
 });
 
 // Add listen
