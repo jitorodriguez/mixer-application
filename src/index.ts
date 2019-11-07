@@ -5,7 +5,7 @@ function sayHello() {
 }
 
 import express from "express";
-import { baseDataCall } from "./utils/data";
+import { getStreamerInfo, getTopTenViewerCounts } from "./utils/data";
 
 const app = express();
 
@@ -18,8 +18,37 @@ app.get("/", (req, res) => {
     res.send( intro );
 });
 
-app.get("/data", (req, res) => {
-    res.send( baseDataCall() );
+// Set up sample data printout page (Excersise to establish methods for getting data)
+app.get("/data", async (req, res) => {
+
+    let dataReturn: string = "";
+
+    // Retrieve Top Ten Viewer Count Mixer Profiles
+    await getTopTenViewerCounts()
+    .then( (value) => {
+        dataReturn += value;
+    })
+    .catch((error) => {
+        dataReturn += error;
+    });
+
+    dataReturn += "<br>Mixer bought streamers... <br>";
+    const twitchBuyovers = Array("Ninja", "Shroud", "KingGothalion");
+
+    // Retrieve Mixer Profiles of high profile Twitch streamers
+    for (const streamerID of twitchBuyovers) {
+        await getStreamerInfo(streamerID)
+        .then( (value) => {
+            dataReturn += value;
+        })
+        .catch( (error) => {
+            dataReturn += error;
+        });
+    }
+
+    // Return data to page
+    res.send(dataReturn);
+
 });
 
 // Add listen

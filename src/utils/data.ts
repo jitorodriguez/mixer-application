@@ -9,20 +9,16 @@ import * as Mixer from "@mixer/client-node";
 import { IOAuthProviderOptions, IOptionalUrlRequestOptions } from "@mixer/client-node";
 
 const client: Mixer.Client = new Mixer.Client();
+const options: IOAuthProviderOptions = {clientId : "Click here to get your Client ID!"};
+
+// @ts-ignore
+const provider = new Mixer.Provider(client, options);
 
 // Simple function that returns a introduction
-export function baseDataCall() {
+export async function getTopTenViewerCounts() {
 
     let dataInfo: string = "";
-    const options: IOAuthProviderOptions = {clientId : "Click here to get your Client ID!"};
-
-    // @ts-ignore
-    const provider = new Mixer.Provider(client, options);
-
     client.use (provider);
-
-    // Cycle through data of bought streamers...
-    // if successful, proceed to obtain top 10 streamers ignoring bought streamers
 
     const obj: IOptionalUrlRequestOptions = {
         qs: { fields: "user,online,viewersTotal,numFollowers,viewersCurrent",
@@ -31,40 +27,37 @@ export function baseDataCall() {
             }
     };
 
-    client.request("GET", "/channels", obj)
+    await client.request("GET", "/channels", obj)
     .then((res) => {
 
-        dataInfo += "Top 10 Online streamers by current viewers...  ";
+        dataInfo += "Top 10 Online streamers by current viewers...<br>";
         const results: (IOptionalUrlRequestOptions["body"]) = res.body;
 
         for (const channel of results) {
-            dataInfo += `${channel.user.username}[${channel.online}]: Viewers-Current[${channel.viewersCurrent}] Followers-Total[${channel.numFollowers}] Viewers-Total[${channel.viewersTotal}]  `;
+            dataInfo += `${channel.user.username}[${channel.online}]: Viewers-Current[${channel.viewersCurrent}] Followers-Total[${channel.numFollowers}] Viewers-Total[${channel.viewersTotal}]<br>`;
         }
-
-        return dataInfo;
     })
     .catch( () => {
-        dataInfo = "ERROR: Unable to Channels by Top Current Viewers...";
-        return dataInfo;
+        dataInfo = "ERROR: Unable to Channels by Top Current Viewers...<br>";
     });
+
+    return dataInfo;
 }
 
-const twitchBuyovers = Array("Ninja", "Shroud");
+export async function getStreamerInfo(streamerID: string) {
+    let dataInfo: string = "";
+    client.use (provider);
 
-// tslint:disable-next-line:no-console
-console.log("Mixer bought streamers... ");
-
-twitchBuyovers.forEach( (streamer) => {
-    client.request("GET", `channels/${streamer}`)
+    // Cycle through data of bought streamers...
+    // if successful, proceed to obtain top 10 streamers ignoring bought streamers
+    await client.request("GET", `channels/${streamerID}`)
     .then((res) => {
-
         const channel: (IOptionalUrlRequestOptions["body"]) = res.body;
-
-        // tslint:disable-next-line:no-console
-        console.log(`${channel.user.username}[${channel.online}]: Followers-Total[${channel.numFollowers}] Viewers-Total[${channel.viewersTotal}] Viewers-Current[${channel.viewersCurrent}]`);
+        dataInfo += `${channel.user.username}[${channel.online}]: Followers-Total[${channel.numFollowers}] Viewers-Total[${channel.viewersTotal}] Viewers-Current[${channel.viewersCurrent}]<br>`;
     })
     .catch( () => {
-        // tslint:disable-next-line:no-console
-        console.log("ERROR: Unable to get Twitch bought streamers channels info");
+        dataInfo += "ERROR: Unable to get Twitch bought streamers channels info<br>";
     });
-});
+
+    return dataInfo;
+}
