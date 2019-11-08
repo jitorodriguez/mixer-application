@@ -6,7 +6,7 @@
 "use strict";
 
 import * as Mixer from "@mixer/client-node";
-import { IOAuthProviderOptions, IOptionalUrlRequestOptions } from "@mixer/client-node";
+import { IChannel, IOAuthProviderOptions, IOptionalUrlRequestOptions } from "@mixer/client-node";
 
 const client: Mixer.Client = new Mixer.Client();
 const options: IOAuthProviderOptions = {clientId : "Click here to get your Client ID!"};
@@ -18,6 +18,8 @@ const provider = new Mixer.Provider(client, options);
 export async function getTopTenViewerCounts() {
 
     let dataInfo: string = "";
+    // let streamerInfo: IChannel[];
+
     client.use (provider);
 
     const obj: IOptionalUrlRequestOptions = {
