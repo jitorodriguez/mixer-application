@@ -4,6 +4,7 @@
   "description": "Testing bed for mixer application related features",
   "main": "dist/index.js",
   "dependencies": {
+    "@types/knockout": "^3.4.66",
     "@types/request": "^2.48.3",
     "express": "^4.17.1",
     "knockout": "^3.5.1"
