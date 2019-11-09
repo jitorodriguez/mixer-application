@@ -15,7 +15,7 @@ const port = 7000;
 // Set up GET for landing page
 app.get("/", (req, res) => {
     const intro = sayHello();
-    res.send( intro );
+    res.sendFile(__dirname + "/index.html");
 });
 
 // Set up sample data printout page (Excersise to establish methods for getting data)
