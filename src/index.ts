@@ -12,6 +12,10 @@ const app = express();
 const hostname = "127.0.0.1";
 const port = 7000;
 
+app.get("/client/hello.js", (req, res) => {
+    res.sendFile(__dirname + "/client/hello.js");
+});
+
 // Set up GET for landing page
 app.get("/", (req, res) => {
     const intro = sayHello();

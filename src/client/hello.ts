@@ -1,5 +1,3 @@
-import * as ko from "knockout";
-
 class HelloViewModel {
     public language: KnockoutObservable<string>;
     public framework: KnockoutObservable<string>;
