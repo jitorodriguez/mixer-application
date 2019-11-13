@@ -7,6 +7,7 @@
 
 import * as Mixer from "@mixer/client-node";
 import { IChannel, IOAuthProviderOptions, IOptionalUrlRequestOptions } from "@mixer/client-node";
+import { StreamerInfo } from "/../dist/classes/streamerinfo";
 
 const client: Mixer.Client = new Mixer.Client();
 const options: IOAuthProviderOptions = {clientId : "Click here to get your Client ID!"};
@@ -18,7 +19,6 @@ const provider = new Mixer.Provider(client, options);
 export async function getTopTenViewerCounts() {
 
     let dataInfo: string = "";
-    // let streamerInfo: IChannel[];
 
     client.use (provider);
 
@@ -35,8 +35,10 @@ export async function getTopTenViewerCounts() {
         dataInfo += "Top 10 Online streamers by current viewers...<br>";
         const results: (IOptionalUrlRequestOptions["body"]) = res.body;
 
-        for (const channel of results) {
-            dataInfo += `${channel.user.username}[${channel.online}]: Viewers-Current[${channel.viewersCurrent}] Followers-Total[${channel.numFollowers}] Viewers-Total[${channel.viewersTotal}]<br>`;
+        for (const data of results) {
+            const channelInfo : IChannel = data;
+            StreamerInfo(channelInfo);
+            
         }
     })
     .catch( () => {
